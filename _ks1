@@ -1,0 +1,56 @@
+#include <iostream>
+#include <climits>
+using namespace std;
+
+void logError(const std::string& err) {
+cerr << err << endl;
+}
+
+class TIntSet {
+public:
+TIntSet(int *pointer, size_t sz, size_t ind) {
+  _pointer = pointer;
+	_size = sz;
+	_index = ind;
+	if (_index >= _size) {
+		logError("index bigger then size");
+	}
+}
+int getValue() const {
+	return getValueByInd(_index);
+}
+int getValueByInd(size_t ind) const {
+	if (ind >= _size) {
+		logError("index bigger then size");
+		return INT_MIN;
+	}
+	if (_pointer == NULL) {
+		logError("pointer is NULL");
+  	return INT_MIN;
+  }
+	return _pointer[ind];
+}
+private:
+int *_pointer;
+size_t _size;
+size_t _index;
+};
+
+int main() {
+	static const int size = 5;
+	int *arrayInt = new int[size];
+	for (int i = 0; i < size; ++i) {
+		arrayInt[i] = i * 10;
+	}
+	TIntSet intSet(arrayInt, size, 3);
+	cout << "getValue(): " << intSet.getValue() << endl;
+	cout << "getValueByInd(): " << endl;
+  for (int i = 0; i < size + 1; ++i) {
+  	cout << intSet.getValueByInd(i) << endl;
+	}
+
+delete []arrayInt;
+return 0;
+
+}
+
